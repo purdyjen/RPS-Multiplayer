@@ -1,0 +1,11 @@
+.hidden {
+    display: none;
+}
+
+.hide {
+    visibility: hidden;
+}
+.card {
+    display: inline-block;
+    position: relative;
+}
