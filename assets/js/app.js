@@ -1,6 +1,5 @@
 $(document).ready(function() {  //doc ready
 
-
   var config = {
     apiKey: "AIzaSyBqSc9Clq98i4lKcSOFvL0kku_LIGu_qcs",
     authDomain: "rock-paper-scissors-5b1e2.firebaseapp.com",
@@ -8,64 +7,87 @@ $(document).ready(function() {  //doc ready
     projectId: "rock-paper-scissors-5b1e2",
     storageBucket: "rock-paper-scissors-5b1e2.appspot.com",
     messagingSenderId: "751589098534",
-    appId: "1:751589098534:web:afdc78dd4b7238d3ef12e7",
-    measurementId: "G-GW303GLM61"
   };
-
   // Initialize Firebase
   firebase.initializeApp(config);
   
-// Create a variable to reference the database.
 var database = firebase.database();
-var connectionsRef = database.ref("/connections");
-var connectedRef = database.ref(".info/connected"); 
 
-connectedRef.on("value", function(snap) {
-  if (snap.val()) {
-    //add user to connected list
-    var connected = connectionsRef.push(true)
-    //remove user when they disconnect
-    connected.onDisconnect().remove();
-  }
-});
+//initial values
+var initialPlayerOne = "";
+var initialPlayerTwo = "";
+var playerOne = initialPlayerOne;
+var playerTwo = initialPlayerTwo;
+var game = database.ref("/game");
+
+database.ref("/game").on("child_added", function(snapshot) {
+
+  // If Firebase has a playerOne and no playerTwo (first case)
+  if (snapshot.child("PlayerOne").exists() && snapshot.child("playerTwo").exists()) {
+
+    // Set the local variables for highBidder equal to the stored values in firebase.
+    playerOne = snapshot.val();
+    playerTwo = parseInt(snapshot.val());
+
+    // change the HTML to reflect the newly updated local values (most recent information from firebase)
+    // $("#highest-bidder").text(snapshot.val().highBidder);
+    // $("#highest-price").text("$" + snapshot.val().highPrice);
+
+    // Print the local data to the console.
+    console.log(snapshot.val().playerOne);
+    console.log(snapshot.val().playerTwo);
+  } });
 
 
-connectionsRef.on("value", function(snap) {
-  // find spot on page where you want to show the number of connected viewers. 
-  //Select it with JQ, then display with text the number of connected users that comes back from the snapshot
- });
-
-/// part of the getInGame() function
-function getInGame() {
-
-  if (currentPlayers < 2) {
-    if (playerOneExists) {
-      playerNum = 2;
+  if (playerOne === initialPlayerOne) {
+    
+    var userId = prompt('Username?', 'Guest');
+    $("#player-one").text("Player 1: " + userId);
+    playerOne = userId;
+      // Code for handling the push
+      database.ref("/game/playerOne").push({
+        name: playerOne,
+        choice: "",
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+      });
     } else {
-      playerNum = 1;
+      if (playerOne !== initialPlayerOne && playerTwo === initialPlayerTwo) {
+        playerTwo = userId;
+         // Code for handling the push
+         database.ref("/game/playerTwo").push({
+          name: playerTwo,
+          choice: "",
+          dateAdded: firebase.database.ServerValue.TIMESTAMP
+        });
+      }
     }
-  };
 
-  // Creates key based on assigned player number
-  playerRef = database.ref("/players/" + playerNum);
-  // Creates player object. 'choice' is unnecessary here, but I left it in to be as complete as possible
-  playerRef.set({
-    name: username,
-    wins: 0,
-    losses: 0,
-    choice: null
+  $("#player-one-submit").on("click", function (){
+    playerOneChoice = $('input[name=choiceRadios]:checked').val();
+        // Code for handling the push
+        database.ref("/game/playerOne").set({
+          name: playerOne,
+          choice: playerOneChoice,
+          dateAdded: firebase.database.ServerValue.TIMESTAMP
+        }); 
   });
-}
+
+  $("#player-two-submit").on("click", function (){
+    playerTwoChoice = $('input[name=choiceRadios]:checked').val();
+    // Code for handling the push
+    database.ref("/game/playerTwo").set({
+      name: playerTwo,
+      choice: playerTwoChoice,
+      dateAdded: firebase.database.ServerValue.TIMESTAMP
+    });
+  });
+// // Firebase watcher .on("child_added"
+// database.ref().on("child_added", function(snapshot) {
+//   // storing the snapshot.val() in a variable for convenience
+//   var sv = snapshot.val();
 
 
-$("#player-one-submit").on("click", function (){
-  playerOneChoice = $('input[name=choiceRadios]:checked').val();
-  console.log(selection);
-});
 
-$("#player-two-submit").on("click", function (){
-  playerTwoSelection = $('input[name=choiceRadios]:checked').val();
-  console.log(selection);
-});
+
 
 }); //doc ready closing tag

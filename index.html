@@ -32,10 +32,10 @@
         
 
   <!-- player one -->
-  <div id="playerOne" class="card" style="width: 30%;">
+  <div class="card" style="width: 30%;">
     <div id="player-one-img"></div>
     <div class="card-body">
-      <h5 class="card-title">Player 1</h5>
+      <h5 id="player-one" class="card-title">Player 1</h5>
       <div class="form-check">
         <label class="form-check-label">
           <input class="form-check-input" type="radio" name="choiceRadios" id="rock1" value="r">
@@ -61,11 +61,11 @@
   
 
   <!-- results -->
-  <div class="card hide" style="width: 30%;">
+  <div id="results" class="card" style="width: 30%;">
     <div id="results-img"></div id="results-img">
     <div class="card-body">
       <h5 class="card-title">Results</h5>
-      <p class="card-text results">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <p class="card-text results"></p>
       <button class="btn btn-primary">Play Again</button>
     </div>
   </div>
@@ -102,7 +102,7 @@
   
   
   <div>
-        <p id="directions-text">Press r, p or s to start playing!</p>
+        <p id="directions-text"></p>
         <p id="userchoice-text"></p>
         <p id="computerchoice-text"></p>
         <p id="wins-text"></p>
