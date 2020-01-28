@@ -21,45 +21,44 @@ $(document).ready(function() {
   var playerTwo = initialPlayerTwo;
   var game = database.ref("/game");
 
-  database.ref("/game").on("child_added", function(snapshot) {
+  $("#add-player-one").on("click", function () {
+    event.preventDefault();
+    playerOne = $("#player-one-name-input").val();
+    playerOneChoice ="";
+    $("#player-one").text("Player 1: " + playerOne);
+    $("#player-one-name-form").hide();
+    database.ref("/playerOne").push({
+      name: playerOne,
+      choice: playerOneChoice,
+      dateAdded: firebase.database.ServerValue.TIMESTAMP
+    });
+    $("#player-one-choice").removeClass("hide");
+  });
 
-    // If Firebase has a playerOne and no playerTwo (first case)
+  database.ref().on("child_added", function(snapshot) {
+
+    // If Firebase has a playerOne and playerTwo (first case)
     if (snapshot.child("PlayerOne").exists() && snapshot.child("playerTwo").exists()) {
 
       // Set the local variables for highBidder equal to the stored values in firebase.
       playerOne = snapshot.val();
-      playerTwo = parseInt(snapshot.val());
+      playerTwo = snapshot.val();
 
-      // change the HTML to reflect the newly updated local values (most recent information from firebase)
-      // $("#highest-bidder").text(snapshot.val().highBidder);
-      // $("#highest-price").text("$" + snapshot.val().highPrice);
-
+      $("#player-one").text("Player 1: " + playerOne);
+      $("#player-one-name-form").hide();
+      $("#player-two").text("Player 1: " + playerOne);
+      $("#player-two-name-form").hide();
       // Print the local data to the console.
       console.log(snapshot.val().playerOne);
       console.log(snapshot.val().playerTwo);
-    } else if (snapshot.child("PlayerOne").exists() && playerTwo === initialPlayerTwo) {
-        playerTwo = userId;
-        // Code for handling the push
-        database.ref("/game/playerTwo").push({
-          name: playerTwo,
-          choice: "",
-          dateAdded: firebase.database.ServerValue.TIMESTAMP
-        });
-      } else {
-    var userId = prompt("Username?", "Guest");
-    $("#player-one").text("Player 1: " + userId);
-    playerOne = userId;
-    // Code for handling the push
-    database.ref("/game/playerOne").push({
-      name: playerOne,
-      choice: "",
-      dateAdded: firebase.database.ServerValue.TIMESTAMP
-    });
-  }
+    } else if (snapshot.child("playerOne").exists() && playerTwo === initialPlayerTwo) {
+      $("#player-one").text("Player 1: " + playerOne);
+      $("#player-one-name-form").hide();
+      } 
 });
 
   $("#player-one-submit").on("click", function() {
-    playerOneChoice = $("input[name=choiceRadios]:checked").val();
+    playerOneChoice = $("input[name=player-one-choice-radios]:checked").val();
     // Code for handling the push
     database.ref("/game/playerOne").set({
       name: playerOne,
@@ -69,7 +68,7 @@ $(document).ready(function() {
   });
 
   $("#player-two-submit").on("click", function() {
-    playerTwoChoice = $("input[name=choiceRadios]:checked").val();
+    playerTwoChoice = $("input[name=player-two-choice-radios]:checked").val();
     // Code for handling the push
     database.ref("/game/playerTwo").set({
       name: playerTwo,
@@ -78,11 +77,6 @@ $(document).ready(function() {
     });
   });
 
-  // Firebase watcher .on("child_added"
-  database.ref().on("child_added", function(snapshot) {
-    // storing the snapshot.val() in a variable for convenience
-    var sv = snapshot.val();
-    console.log(sv);
-  });
+ 
 
   }); //doc ready closing tag
