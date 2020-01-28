@@ -35,7 +35,21 @@ $(document).ready(function() {
     $("#player-one-choice").removeClass("hide");
   });
 
-  database.ref().on("child_added", function(snapshot) {
+  $("#add-player-two").on("click", function () {
+    event.preventDefault();
+    playerTwo = $("#player-two-name-input").val();
+    playerTwoChoice ="";
+    $("#player-two").text("Player 1: " + playerOne);
+    $("#player-two-name-form").hide();
+    database.ref("/playerTwo").push({
+      name: playerTwo,
+      choice: playerTwoChoice,
+      dateAdded: firebase.database.ServerValue.TIMESTAMP
+    });
+    $("#player-two-choice").removeClass("hide");
+  });
+  
+  database.ref().on("value", function(snapshot) {
 
     // If Firebase has a playerOne and playerTwo (first case)
     if (snapshot.child("PlayerOne").exists() && snapshot.child("playerTwo").exists()) {
