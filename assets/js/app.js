@@ -23,15 +23,16 @@ $(document).ready(function() {
   $("#game-room").hide();
  
   function getGameInfo() {
+   
     database.ref().on("value", function(snapshot) {
       if (
         snapshot.child("playerOne").exists() &&
         snapshot.child("playerTwo").exists()
       ) {
         event.preventDefault();
-        $("#game-room").show();
         console.log("both");
         alert("Sorry! Game is full. Try again later.");
+        $("#play-game").show();
         return;
       } else if (snapshot.child("playerOne").exists()) {
         event.preventDefault();
@@ -86,6 +87,7 @@ $(document).ready(function() {
   });
 
   $("#player-one-submit").on("click", function() {
+    event.preventDefault();
     playerOneChoice = $("input[name=player-one-choice-radios]:checked").val();
     // Code for handling the push
     database.ref("/game/playerOne").set({
@@ -96,6 +98,7 @@ $(document).ready(function() {
   });
 
   $("#player-two-submit").on("click", function() {
+    event.preventDefault();
     playerTwoChoice = $("input[name=player-two-choice-radios]:checked").val();
     // Code for handling the push
     database.ref("/game/playerTwo").set({
