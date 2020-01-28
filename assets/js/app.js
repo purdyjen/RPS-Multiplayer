@@ -15,11 +15,8 @@ $(document).ready(function() {
   var database = firebase.database();
 
   //initial values
-  var initialPlayerOne = "";
-  var initialPlayerTwo = "";
-  var playerOne = initialPlayerOne;
-  var playerTwo = initialPlayerTwo;
-  var game = database.ref("/game");
+  var playerOne = "";
+  var playerTwo = "";
 
   $("#add-player-one").on("click", function () {
     event.preventDefault();
@@ -48,7 +45,7 @@ $(document).ready(function() {
     });
     $("#player-two-choice").removeClass("hide");
   });
-  
+
   database.ref().on("value", function(snapshot) {
 
     // If Firebase has a playerOne and playerTwo (first case)
@@ -65,7 +62,7 @@ $(document).ready(function() {
       // Print the local data to the console.
       console.log(snapshot.val().playerOne);
       console.log(snapshot.val().playerTwo);
-    } else if (snapshot.child("playerOne").exists() && playerTwo === initialPlayerTwo) {
+    } else if (snapshot.child("playerOne").exists()) {
       $("#player-one").text("Player 1: " + playerOne);
       $("#player-one-name-form").hide();
       } 
