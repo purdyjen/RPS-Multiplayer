@@ -22,35 +22,43 @@ $(document).ready(function() {
   var playerTwo = "";
   $("#game-room").hide();
  
+  function assignPlayers(){
+    if (
+      playerOne !== null && playerTwo !== null
+    ) {
+      event.preventDefault();
+      console.log("both");
+      alert("Sorry! Game is full. Try again later.");
+      $("#play-game").show();
+      $("#game-room").hide();
+      return;
+    } else if (playerOne !== null) {
+      event.preventDefault();
+      $("#game-room").show();
+      $("#player-one").hide();
+      $("#results").hide();
+      console.log("one");
+      return;
+    } else {
+      event.preventDefault();
+      $("#game-room").show();
+      $("#player-two").hide();
+      $("#player-one-choice").hide();
+      $("#results").hide();
+      console.log("none");
+      return;
+    }
+  }
+
   function getGameInfo() {
-   
-    database.ref().on("value", function(snapshot) {
-      if (
-        snapshot.child("playerOne").exists() &&
-        snapshot.child("playerTwo").exists()
-      ) {
-        event.preventDefault();
-        console.log("both");
-        alert("Sorry! Game is full. Try again later.");
-        $("#play-game").show();
-        return;
-      } else if (snapshot.child("playerOne").exists()) {
-        event.preventDefault();
-        $("#game-room").show();
-        $("#player-one").hide();
-        $("#results").hide();
-        console.log("one");
-        return;
-      } else {
-        event.preventDefault();
-        $("#game-room").show();
-        $("#player-two").hide();
-        $("#results").hide();
-        console.log("none");
-        return;
-      }
+      database.ref().on("value", function(snapshot) {
+      playerOne = snapshot.child("playerOne");
+      playerTwo = snapshot.child("playerTwo");
+      console.log(playerOne, playerTwo);
+      assignPlayers();
     });
   }
+
 
   $("#play-game").on("click", function() {
     event.preventDefault();
@@ -64,7 +72,7 @@ $(document).ready(function() {
     playerOneChoice = "";
     $("#player-one").text("Player 1: " + playerOne);
     $("#player-one-name-form").hide();
-    $("#player-one-choice").removeClass("hide");
+    $("#player-one-choice").show();
     database.ref("/playerOne").push({
       name: playerOne,
       choice: playerOneChoice,
@@ -90,7 +98,7 @@ $(document).ready(function() {
     event.preventDefault();
     playerOneChoice = $("input[name=player-one-choice-radios]:checked").val();
     // Code for handling the push
-    database.ref("/game/playerOne").set({
+    database.ref("/playerOne").set({
       name: playerOne,
       choice: playerOneChoice,
       dateAdded: firebase.database.ServerValue.TIMESTAMP
@@ -101,7 +109,7 @@ $(document).ready(function() {
     event.preventDefault();
     playerTwoChoice = $("input[name=player-two-choice-radios]:checked").val();
     // Code for handling the push
-    database.ref("/game/playerTwo").set({
+    database.ref("/playerTwo").set({
       name: playerTwo,
       choice: playerTwoChoice,
       dateAdded: firebase.database.ServerValue.TIMESTAMP

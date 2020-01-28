@@ -5,9 +5,9 @@ Rock-Paper-Scissors
 Pseudo-code:
 
 ## Multiplayer
+ * play game button
+ * check firebase values
  * display two user sign-up forms
-    * same layout in Star Wars RPG?
-    * is sign-up necessary? sufficient just to have player one and player two?
  * player one inputs name and selects RPS
     * data sent to realtime database
     * player one form disappears from UI
