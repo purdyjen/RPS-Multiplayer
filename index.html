@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/9a9678c181.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/9a9678c181.js" crossorigin="anonymous"></script> -->
    <!-- Firebase References -->
    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
@@ -26,16 +26,17 @@
 <body>
     <!-- jumbotron -->
   <div class="jumbotron jumbotron-fluid"> 
+    <button id="play-game" class="btn btn-block btn-info">Play Game!</button>
     <!-- game container -->
-    <div class="container hidden">
+    <div id="game-room" class="container">
       <h1 class="display-4">Rock-Paper-Scissors</h1>
       <br>
-  
-  <!-- player one -->
-  <div class="card" style="width: 30%;">
-    <div id="player-one-img"></div>
-    <div class="card-body">
-      <h5 id="player-one" class="card-title">Player 1</h5>
+ 
+      <!-- player one -->
+      <div id="player-one" class="card" style="width: 30%;">
+        <div id="player-one-img"></div>
+        <div class="card-body">
+          <h5 id="player-one" class="card-title">Player 1</h5>
           <!-- get and push player one name -->
           <form id="player-one-name-form" role="form">
             <div class="form-group row">
@@ -46,84 +47,93 @@
           </form>
 
           <form id="player-one-choice" class="hide">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="player-one-choice-radios" id="rock1" value="r">
-              Rock
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="player-one-choice-radios" id="paper1" value="p">
-              Paper
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="player-one-choice-radios" id="scissors1" value="s">
-              Scissors
-            </label>
-          </div>
-          <input type="submit" id="player-one-submit" class="btn btn-primary"></input>
-        </form>
-   <!-- end card body -->
-      </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="player-one-choice-radios" id="rock1" value="r">
+                Rock
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="player-one-choice-radios" id="paper1" value="p">
+                Paper
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="player-one-choice-radios" id="scissors1" value="s">
+                Scissors
+              </label>
+            </div>
+            <input type="submit" id="player-one-submit" class="btn btn-primary"></input>
+          </form>
+        <!-- end card body -->
+        </div>
       <!-- end card -->
-  </div>
+      </div>
 
   <!-- results -->
   <div id="results" class="card hide" style="width: 30%;">
-    <div id="results-img"></div id="results-img">
+    <div id="results-img"></div>
       <div class="card-body">
         <h5 class="card-title">Results</h5>
         <p class="card-text results"></p>
         <button class="btn btn-primary">Play Again</button>
       </div>
     </div>
-  </div>
+
 
    <!-- player two -->
-   <div  class="card" style="width: 30%;">
+   <div  id="player-two" class="card" style="width: 30%;">
     <div id="player-two-img"></div>
-    <div class="card-body">
-    <h5 id="player-two" class="card-title">Player 2</h5>
-    <form id="player-two-name-form" role="form">
-      <div class="form-group row">
-        <label for="name-input">Name:</label>
-        <input class="form-control" id="player-two-name-input" type="text">
-      </div>
-      <button class="btn btn-default pull-right btn-info" id="add-player-two" type="submit">Submit Name</button>
-    </form>
-    <form id="player-two-choice" class="hide">
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="player-two-choice-radios" id="rock2" value="r">
-        Rock
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="player-two-choice-radios" id="paper2" value="p">
-        Paper
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="player-two-choice-radios" id="scissors2" value="s">
-        Scissors
-      </label>
-    </div>
-      <input type="submit" id="player-two-submit" class="btn btn-primary"></input>
-    </form>
-    <!-- end card body -->
-    </div>
-    <!-- end card -->
-  </div>
+      <div class="card-body">
+        <h5 id="player-two" class="card-title">Player 2</h5>
+        <form id="player-two-name-form" role="form">
+          <div class="form-group row">
+            <label for="name-input">Name:</label>
+            <input class="form-control" id="player-two-name-input" type="text">
+          </div>
+          <button class="btn btn-default pull-right btn-info" id="add-player-two" type="submit">Submit Name</button>
+        </form>
+        <form id="player-two-choice" class="hide">
 
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="player-two-choice-radios" id="rock2" value="r">
+              Rock
+            </label>
+          </div>
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="player-two-choice-radios" id="paper2" value="p">
+              Paper
+            </label>
+          </div>
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="player-two-choice-radios" id="scissors2" value="s">
+              Scissors
+            </label>
+          </div>
+
+          <input type="submit" id="player-two-submit" class="btn btn-primary"></input>
+        </form>
+      <!-- end card body -->
+      </div>
+    <!-- end card -->
+    </div>
 
 <!-- end game container -->
   </div>
 
+  <!-- testing div -->
+  <!-- <div id="test">
+<span id="both">Both</span>
+<span id="one">One</span>
+<span id="none">None</span>
+  </div> -->
     <!-- end jumbotron -->
 </div>
 
