@@ -29,7 +29,6 @@ $(document).ready(function() {
   var playerTwoRef = playersRef.child("playerTwo");
   $("#game-room").hide();
   $("#results").hide();
- 
 
   
     playersRef.on("value", function(snapshot) {
@@ -69,26 +68,25 @@ $(document).ready(function() {
   $("#add-player-one").on("click", function() {
     // event.preventDefault();
     playerOne = $("#player-one-name-input").val();
-    $("#player-one-name").text("Player 1: " + playerOne);
-    $("#player-one-results-name").text("Player 1: " + playerOne);
+    $("#player-one-name").text("Player One: " + playerOne);
+    $("#player-one-results-name").text("Player One: " + playerOne);
     $("#player-one-name-form").hide();
     $("#player-one-choice").removeClass("hide");
-    playerOneRef.push({
+    playerOneRef.set({
       name: playerOne,
       wins: 0,
       losses: 0
     });
-    choiceRef.push(oneChoiceRef);
   });
 
   $("#add-player-two").on("click", function() {
     // event.preventDefault();
     playerTwo = $("#player-two-name-input").val();
-    $("#player-two-name").text("Player 2: " + playerTwo);
-    $("#player-two-results-name").text("Player 2: " + playerTwo);
+    $("#player-two-name").text("Player Two: " + playerTwo);
+    $("#player-two-results-name").text("Player Two: " + playerTwo);
     $("#player-two-name-form").hide();
     $("#player-two-choice").removeClass("hide");
-    playerTwoRef.push({
+    playerTwoRef.set({
       name: playerTwo,
       wins: 0,
       losses: 0
@@ -119,9 +117,14 @@ $(document).ready(function() {
     $("#play-again").hide();
   });
 
-  choiceRef.on("child_added", function(snapshot) {
+  choiceRef.on("value", function(snapshot) {
     //length of array
     numChoices = snapshot.numChildren();
+    oneChoice = snapshot.child("playerOne").val();
+    twoChoice = snapshot.child("playerTwo").val();
+    
+    console.log(numChoices);
+    console.log(oneChoice, twoChoice);
     if (numChoices === 2) {
       results();
     } else if (numChoices === 1) {
@@ -137,18 +140,20 @@ $(document).ready(function() {
   }
 
   function playerOneWins() {
-    $("#results-text").text(playerOneRef.name.val() + " wins!");
+    $("#results-text").text(playerOneRef.name + " wins!");
     $("#play-again").show();
   }
 
   function playerTwoWins() {
-    $("#results-text").text(playerTwoRef.name.val() + " wins!");
+    $("#results-text").text(playerTwoRef.name + " wins!");
     $("#play-again").show();
   }
 
   function results () {
-    var one = oneChoiceRef.choice;
-    var two = twoChoiceRef.choice;
+    var one = oneChoice.choice;
+    var two = twoChoice.choice;
+    console.log("test results function");
+    console.log(one, two);
     if (one === "r" && two === "r") {
       tie();
     } else if (one === "p" && two === "p") {
@@ -167,6 +172,8 @@ $(document).ready(function() {
       playerTwoWins();
     } else if (one === "p" && two === "s") {
       playerTwoWins();
+    } else {
+      console.log("nothing happened");
     }
   }
 
