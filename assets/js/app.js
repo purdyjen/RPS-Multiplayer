@@ -169,7 +169,6 @@ $(document).ready(function() {
   function tie() {
     $("#results-text").text("It's a tie!");
     $("#play-again").show();
-
   }
 
   function playerOneWins() {
@@ -177,7 +176,6 @@ $(document).ready(function() {
     playersRef.child("playerOne").child("wins").set(playerOne.wins + 1);
     playersRef.child("playerTwo").child("losses").set(playerTwo.losses + 1);
     $("#play-again").show();
-
   }
 
   function playerTwoWins() {
@@ -185,7 +183,6 @@ $(document).ready(function() {
     playersRef.child("playerTwo").child("wins").set(playerTwo.wins + 1);
     playersRef.child("playerOne").child("losses").set(playerOne.losses + 1);
   $("#play-again").show();
-
   }
 
   function results () {
