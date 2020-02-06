@@ -30,7 +30,15 @@ $(document).ready(function() {
   $("#game-room").hide();
   $("#results").hide();
 
-  
+//WHILE TESTING ONLY
+// $("#play-game").hide();
+// $("#game-room").show();
+// $("#player-one-name-form").hide();
+// $("#player-two-name-form").hide();
+// $("#player-one-choice").removeClass("hide");
+// $("#player-two-choice").removeClass("hide");
+//WHILE TESTING ONLY
+
     playersRef.on("value", function(snapshot) {
       //length of array
       numPlayers = snapshot.numChildren();
@@ -40,14 +48,36 @@ $(document).ready(function() {
       // Player data objects
       playerOne = snapshot.child("playerOne").val();
       playerTwo = snapshot.child("playerTwo").val();
-      // If theres a player 1, fill in name and win loss data
-    
+      
+        if (playerOneExists) {
+          $("#player-one-results-name").text("Player One: " + playerOne.name);
+          $("#player-one-wins").text("Wins: " + playerOne.wins);
+          $("#player-one-losses").text("Losses: " + playerOne.losses);
+        } else {
+          $("#player-one-results-name").text("Waiting for Player One...");
+          $("#player-one-wins").empty();
+          $("#player-one-losses").empty();
+        }
+        
+        if (playerTwoExists) {
+          $("#player-two-results-name").text("Player Two: " + playerTwo.name);
+          $("#player-two-wins").text("Wins: " + playerTwo.wins);
+          $("#player-two-losses").text("Losses: " + playerTwo.losses);
+        } else {
+          $("#player-two-results-name").text("Waiting for Player Two...");
+          $("#player-two-wins").empty();
+          $("#player-two-losses").empty();
+        }
     });
   
 
   $("#play-game").on("click", function() {
     // event.preventDefault();
     $("#play-game").hide();
+    checkNumPlayers();
+  });   
+    function checkNumPlayers() {
+      playersRef.onDisconnect().remove();
     if (numPlayers < 2) {
       if (playerOneExists) {
         $("#game-room").show();
@@ -63,13 +93,12 @@ $(document).ready(function() {
       $("#play-game").show();
       $("#game-room").hide();
     }
-  });
+    }
 
   $("#add-player-one").on("click", function() {
     // event.preventDefault();
     playerOne = $("#player-one-name-input").val();
     $("#player-one-name").text("Player One: " + playerOne);
-    $("#player-one-results-name").text("Player One: " + playerOne);
     $("#player-one-name-form").hide();
     $("#player-one-choice").removeClass("hide");
     playerOneRef.set({
@@ -83,7 +112,6 @@ $(document).ready(function() {
     // event.preventDefault();
     playerTwo = $("#player-two-name-input").val();
     $("#player-two-name").text("Player Two: " + playerTwo);
-    $("#player-two-results-name").text("Player Two: " + playerTwo);
     $("#player-two-name-form").hide();
     $("#player-two-choice").removeClass("hide");
     playerTwoRef.set({
@@ -124,9 +152,12 @@ $(document).ready(function() {
     twoChoice = snapshot.child("playerTwo").val();
     
     console.log(numChoices);
-    console.log(oneChoice, twoChoice);
+    
     if (numChoices === 2) {
       results();
+      $("#results").show();
+      $("#player-one").hide();
+      $("#player-two").hide();
     } else if (numChoices === 1) {
       $("#results-text").text("Waiting for Player Two's Selection...");
     } else {
@@ -136,23 +167,23 @@ $(document).ready(function() {
 
   function tie() {
     $("#results-text").text("It's a tie!");
-    $("#play-again").show();
   }
 
   function playerOneWins() {
-    $("#results-text").text(playerOneRef.name + " wins!");
-    $("#play-again").show();
+    $("#results-text").text(playerOne.name + " wins!");
+    playersRef.child("playerOne").child("wins").set(playerOne.wins + 1);
+    playersRef.child("playerTwo").child("losses").set(playerTwo.losses + 1);
   }
 
   function playerTwoWins() {
-    $("#results-text").text(playerTwoRef.name + " wins!");
-    $("#play-again").show();
+    $("#results-text").text(playerTwo.name + " wins!");
+    playersRef.child("playerTwo").child("wins").set(playerTwo.wins + 1);
+    playersRef.child("playerOne").child("losses").set(playerOne.losses + 1);
   }
 
   function results () {
     var one = oneChoice.choice;
     var two = twoChoice.choice;
-    console.log("test results function");
     console.log(one, two);
     if (one === "r" && two === "r") {
       tie();
@@ -180,6 +211,10 @@ $(document).ready(function() {
   $("#play-again").on("click", function() { 
     oneChoiceRef.remove();
     twoChoiceRef.remove();
-
+    $("#results").hide();
+    $("#player-one").show();
+    $("#player-two").show();
+    $("input[name='player-one-choice-radios']").prop("checked", false);
+    $("input[name='player-two-choice-radios']").prop("checked", false);
   });
 }); //doc ready closing tag
