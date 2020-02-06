@@ -75,9 +75,10 @@ $(document).ready(function() {
     // event.preventDefault();
     $("#play-game").hide();
     checkNumPlayers();
+    
   });   
     function checkNumPlayers() {
-      playersRef.onDisconnect().remove();
+      
     if (numPlayers < 2) {
       if (playerOneExists) {
         $("#game-room").show();
@@ -222,5 +223,6 @@ $(document).ready(function() {
     $("#player-two").show();
     $("input[name='player-one-choice-radios']").prop("checked", false);
     $("input[name='player-two-choice-radios']").prop("checked", false);
+    playersRef.onDisconnect().remove();
   });
 }); //doc ready closing tag
