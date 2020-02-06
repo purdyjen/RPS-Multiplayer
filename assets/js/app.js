@@ -192,6 +192,7 @@ $(document).ready(function() {
     var one = oneChoice.choice;
     var two = twoChoice.choice;
     console.log(one, two);
+    $("#play-again").show();
     if (one === "r" && two === "r") {
       tie();
     } else if (one === "p" && two === "p") {
@@ -224,5 +225,6 @@ $(document).ready(function() {
     $("input[name='player-one-choice-radios']").prop("checked", false);
     $("input[name='player-two-choice-radios']").prop("checked", false);
     playersRef.onDisconnect().remove();
+    checkNumPlayers();
   });
 }); //doc ready closing tag
