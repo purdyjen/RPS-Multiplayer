@@ -233,8 +233,8 @@ $(document).ready(function() {
 
   
 
-$("#play-again-button").on("click", function() { 
-  event.preventDefault();
+$("#play-again").on("click", function() { 
+    event.preventDefault();
     oneChoiceRef.remove();
     twoChoiceRef.remove();
     $("#results").hide();
@@ -244,6 +244,6 @@ $("#play-again-button").on("click", function() {
     $("input[name='player-two-choice-radios']").prop("checked", false);
     
     checkWindow();
-    checkNumPlayers();
+    // checkNumPlayers();
   });
 }); //doc ready closing tag
