@@ -239,7 +239,11 @@ $("#play-again-button").on("click", function() {
     twoChoiceRef.remove();
     $("#results").hide();
     $("#player-one").show();
+    $("#player-one-name-form").hide();
+    $("#player-one-choice").removeClass("hide");
     $("#player-two").show();
+    $("#player-two-name-form").hide();
+    $("#player-two-choice").removeClass("hide");
     $("input[name='player-one-choice-radios']").prop("checked", false);
     $("input[name='player-two-choice-radios']").prop("checked", false);
     
