@@ -131,7 +131,7 @@ $(document).ready(function() {
     });
     $("#player-one").hide();
     $("#results").show();
-    $("#play-again-button").hide();
+    
   });
 
   $("#player-two-submit").on("click", function() {
@@ -143,7 +143,7 @@ $(document).ready(function() {
     });
     $("#player-two").hide();
     $("#results").show();
-    $("#play-again-button").hide();
+    
   });
 
 
@@ -158,7 +158,7 @@ $(document).ready(function() {
     if (numChoices === 2) {
       results();
       $("#results").show();
-      $("#play-again-button").show();
+      $("#play-again-button").append("<button id=\"play-again\" class=\"btn btn-primary pull-right play-again\">Play Again</button>")
       $("#player-one").hide();
       $("#player-two").hide();
     } else if (numChoices === 1) {
@@ -170,7 +170,7 @@ $(document).ready(function() {
 
   function tie() {
     $("#results-text").text("It's a tie!");
-    $("#play-again-button").show();
+    
     checkWindow();
     
   }
@@ -179,7 +179,7 @@ $(document).ready(function() {
     $("#results-text").text(playerOne.name + " wins!");
     playersRef.child("playerOne").child("wins").set(playerOne.wins + 1);
     playersRef.child("playerTwo").child("losses").set(playerTwo.losses + 1);
-    $("#play-again-button").show();
+    
     checkWindow();
     
   }
@@ -188,7 +188,7 @@ $(document).ready(function() {
     $("#results-text").text(playerTwo.name + " wins!");
     playersRef.child("playerTwo").child("wins").set(playerTwo.wins + 1);
     playersRef.child("playerOne").child("losses").set(playerOne.losses + 1);
-    $("#play-again-button").show();
+    
    
   }
 
@@ -198,7 +198,7 @@ $(document).ready(function() {
       oneChoiceRef.remove();
       twoChoiceRef.remove();
       playersRef.remove();
-      $("#play-game-button").show();
+      
     }
   }
 
@@ -207,7 +207,7 @@ $(document).ready(function() {
     var one = oneChoice.choice;
     var two = twoChoice.choice;
     console.log(one, two);
-    $("#play-again-button").show();
+    
     if (one === "r" && two === "r") {
       tie();
     } else if (one === "p" && two === "p") {
