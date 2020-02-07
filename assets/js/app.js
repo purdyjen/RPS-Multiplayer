@@ -29,6 +29,7 @@ $(document).ready(function() {
   var playerTwoRef = playersRef.child("playerTwo");
   $("#game-room").hide();
   $("#results").hide();
+  $("#exit-game").hide();
 
 //WHILE TESTING ONLY
 // $("#play-game").hide();
@@ -73,11 +74,12 @@ $(document).ready(function() {
   $("#play-game").on("click", function() {
     // event.preventDefault();
     $("#play-game").hide();
+    $("#exit-game").show();
     checkNumPlayers();
     
   });   
     function checkNumPlayers() {
-      // playersRef.onDisconnect().remove();
+      
       
     if (numPlayers < 2) {
       if (playerOneExists) {
@@ -248,6 +250,9 @@ $("#play-again-button").on("click", function() {
     $("input[name='player-two-choice-radios']").prop("checked", false);
     
     checkWindow();
-    // checkNumPlayers();
+  });
+
+  $("#play-again-button").on("click", function() {
+    playersRef.remove();
   });
 }); //doc ready closing tag

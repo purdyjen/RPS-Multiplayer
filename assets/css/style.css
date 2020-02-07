@@ -9,3 +9,7 @@
     display: inline-block;
     position: relative;
 }
+
+#exit-game {
+    margin-right: 20px;
+}
