@@ -233,7 +233,7 @@ $(document).ready(function() {
 
   
 
-$("#play-again").on("click", function() { 
+$("#play-again-button").on("click", function() { 
     event.preventDefault();
     oneChoiceRef.remove();
     twoChoiceRef.remove();
