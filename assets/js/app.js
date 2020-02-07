@@ -158,7 +158,7 @@ $(document).ready(function() {
     if (numChoices === 2) {
       results();
       $("#results").show();
-      $("#play-again-button").append("<button id=\"play-again\" class=\"btn btn-primary pull-right play-again\">Play Again</button>")
+      $("#play-again-button").html("<button id=\"play-again\" class=\"btn btn-primary pull-right play-again\">Play Again</button>")
       $("#player-one").hide();
       $("#player-two").hide();
     } else if (numChoices === 1) {
